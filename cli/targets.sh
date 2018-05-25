@@ -330,6 +330,15 @@ function readObjectProperties {
         doHelp
         exit -1
       fi
+    elif [ "$CODE" == "--jsonpath" ]; then
+      if [ $# -ne 0 ]; then
+        JSONPATH=$1
+        shift
+      else
+        echo "readObjectProperties: You must specify a value for parameter $CODE" 1>&2
+        doHelp
+        exit -1
+      fi
     elif [[ "$CODE" =~ ^--.* ]]; then
       PASSTHROUGH+=($CODE)
       if [ $# -ne 0 ]; then
@@ -408,6 +417,7 @@ function buildObject {
     appendJsonProperty "$1" "id" "{\"S\":\"${WORKER_ID}\"}"
     appendJsonProperty "$1" "type" "{\"S\":\"${WORKER_TYPE}\"}"
     appendJsonProperty "$1" "destination" "{\"S\":\"${DESTINATION_ID}\"}"
+    
 
     if [ ! -z "${DESTINATION_ROLE_ARN}" ]; then
       appendJsonProperty "$1" "role" "{\"S\":\"${DESTINATION_ROLE_ARN}\"}"
@@ -427,6 +437,9 @@ function buildObject {
   fi
   if [ ! -z "${COLLAPSE}" ]; then
     appendJsonProperty "$1" "collapse" "{\"S\":\"${COLLAPSE}\"}"
+  fi
+  if [ ! -z "${JSONPATH}" ]; then
+    appendJsonProperty "$1" "jsonpath" "{\"S\":\"${JSONPATH}\"}"
   fi
   if [ ! -z "${PARALLEL}" ]; then
     appendJsonProperty "$1" "parallel" "{\"BOOL\":${PARALLEL}}"

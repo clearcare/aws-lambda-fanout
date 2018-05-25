@@ -73,7 +73,7 @@ function postToService(serviceReference, target, records, stats, callback) {
   });
   
   // Filter out records that do not match JsonPath filter
-  if(target.jsonPath){
+  if(target.jsonpath){
     records = records.filter(function(record){
       return jsonpathUtil.jsonPathTest(record, target, errors);
     });

@@ -27,7 +27,9 @@ var transformation = require('./lib/transformation.js');
 var configuration = require('./lib/configuration.js');
 var statistics = require('./lib/statistics.js');
 var services = require('./lib/services.js');
+var jsonpathUtil = require('../lib/jsonpath-util.js');
 var async = require('async');
+
 
 // Service configuration
 var config = {
@@ -68,7 +70,14 @@ function postToService(serviceReference, target, records, stats, callback) {
 		} else {
 			return true;
 		}
-	});
+  });
+  
+  // Filter out records that do not match JsonPath filter
+  if(target.jsonPath){
+    records = records.filter(function(record){
+      return jsonpathUtil.jsonPathTest(record, target, errors);
+    });
+  }
 
 	// Group records per block for sending
 	var maxRecordsPerBlock = (target.collapse !== null) && (target.collapse != "") && (target.collapse != "none") ? maxRecords : 1;

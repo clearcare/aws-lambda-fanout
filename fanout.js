@@ -27,7 +27,7 @@ var transformation = require('./lib/transformation.js');
 var configuration = require('./lib/configuration.js');
 var statistics = require('./lib/statistics.js');
 var services = require('./lib/services.js');
-var jsonpathUtil = require('../lib/jsonpath-util.js');
+var jsonpathUtil = require('./lib/jsonpath-util.js');
 var async = require('async');
 
 

@@ -2,10 +2,14 @@ var jsonPathUtil = require('../lib/jsonpath-util.js');
 
 var assert = require('assert');
 
+//{"hello": "world"}
+var testBase64 = "eyJoZWxsbyI6ICJ3b3JsZCJ9";
+
+
 describe('jsonpath-util', function () {
   describe('#jsonPathTest()', function () {
     it('should populate errors', function () {
-      var record = {};
+      var record = {kinesis: {}};
       var target = {};
       var errors = [];
       jsonPathUtil.jsonPathTest(record, target, errors)
@@ -13,17 +17,16 @@ describe('jsonpath-util', function () {
     });
 
     it('should validate jsonpath', function () {
-      var record = {};
+      var record = {kinesis: {}};
       var target = {};
       var errors = [];
       target.jsonpath = '$..event[?(@.hello=="world")]';
-      record.data = '{"hello": "world"}';
+      record.kinesis.data = testBase64;
       var result = jsonPathUtil.jsonPathTest(record, target, errors);
       assert.strictEqual(errors.length, 0);
       assert.strictEqual(result, true);
 
       target.jsonpath = '$..event[?(@.hello=="foo")]';
-      record.data = '{"hello": "world"}';
       result = jsonPathUtil.jsonPathTest(record, target, errors);
       assert.strictEqual(errors.length, 0);
       assert.strictEqual(result, false);

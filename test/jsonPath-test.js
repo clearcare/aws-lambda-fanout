@@ -26,6 +26,7 @@ describe('jsonpath-util', function () {
       assert.strictEqual(errors.length, 0);
       assert.strictEqual(result, true);
 
+      record.kinesis.data = testBase64;
       target.jsonpath = '$..event[?(@.hello=="foo")]';
       result = jsonPathUtil.jsonPathTest(record, target, errors);
       assert.strictEqual(errors.length, 0);
